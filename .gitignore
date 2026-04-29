@@ -1,18 +1,22 @@
+.venv/
 venv/
 __pycache__/
 *.pyc
 
-# AI / large files
+# model weights / large binaries
 *.pt
 *.pth
+*.ckpt
 *.onnx
 *.bin
-*.ckpt
 
-# images (optional depending on your project)
-*.jpg
-*.png
-
-# outputs
+# generated outputs
+benchmark_results.json
+calibration_profile.json
 results/
-*.json
+outputs/
+benchmark_debug/
+
+# macOS / editor
+.DS_Store
+.vscode/

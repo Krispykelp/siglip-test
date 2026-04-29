@@ -1,0 +1,9 @@
+numpy
+pillow
+torch
+torchvision
+transformers
+ultralytics
+scipy
+safetensors
+huggingface-hub
