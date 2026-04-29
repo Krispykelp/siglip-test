@@ -1,0 +1,18 @@
+venv/
+__pycache__/
+*.pyc
+
+# AI / large files
+*.pt
+*.pth
+*.onnx
+*.bin
+*.ckpt
+
+# images (optional depending on your project)
+*.jpg
+*.png
+
+# outputs
+results/
+*.json
