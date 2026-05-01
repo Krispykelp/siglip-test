@@ -1,27 +1,49 @@
 def infer_context_signals(detection_counts):
     person_count = detection_counts.get("person", 0)
 
+    # IMPORTANT:
+    # kite is intentionally excluded from sports_items because it was
+    # causing scenic/nature/travel scenes to be misread as sports.
     sports_items = sum(detection_counts.get(k, 0) for k in [
-        "sports ball", "bicycle", "surfboard", "skateboard", "tennis racket",
-        "frisbee", "baseball bat", "baseball glove", "skis", "snowboard", "kite"
+        "sports ball",
+        "bicycle",
+        "surfboard",
+        "skateboard",
+        "tennis racket",
+        "frisbee",
+        "baseball bat",
+        "baseball glove",
+        "skis",
+        "snowboard",
     ])
 
     study_items = sum(detection_counts.get(k, 0) for k in [
-        "laptop", "book", "backpack"
+        "laptop",
+        "book",
+        "backpack",
     ])
 
     social_scene_items = sum(detection_counts.get(k, 0) for k in [
-        "dining table", "cake", "cup", "chair", "bench"
+        "dining table",
+        "cake",
+        "cup",
+        "chair",
+        "bench",
     ])
 
     travel_items = sum(detection_counts.get(k, 0) for k in [
-        "car", "bus", "train", "airplane", "boat"
+        "car",
+        "bus",
+        "train",
+        "airplane",
+        "boat",
     ])
 
     pet_items = detection_counts.get("dog", 0) + detection_counts.get("cat", 0)
     phone_items = detection_counts.get("cell phone", 0)
     laptop_count = detection_counts.get("laptop", 0)
     book_count = detection_counts.get("book", 0)
+    kite_count = detection_counts.get("kite", 0)
 
     return {
         "person_count": person_count,
@@ -49,4 +71,5 @@ def infer_context_signals(detection_counts):
         "book_dominant_scene": book_count > laptop_count and book_count > 0,
         "laptop_heavy_scene": laptop_count >= 2 and book_count <= 1,
         "hybrid_laptop_book_scene": laptop_count >= 1 and book_count >= 1,
+        "kite_scene": kite_count > 0,
     }

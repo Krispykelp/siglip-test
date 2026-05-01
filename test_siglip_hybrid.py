@@ -1,5 +1,6 @@
 import json
-from hybrid_scoring_engine import score_image
+from analyzer.engine import run_analysis
+from analyzer.tag_mapper import get_family_for_tag
 
 USE_CALIBRATION = False
 FAMILY_BIAS_WEIGHT = 0.15
@@ -28,17 +29,34 @@ def get_calibration():
 
 
 def analyze_image(image_path: str):
-    calibration = get_calibration()
+    _ = get_calibration()
+    _ = FAMILY_BIAS_WEIGHT
+    _ = TAG_BIAS_WEIGHT
 
-    result = score_image(
-        image_path=image_path,
-        calibration=calibration,
-        family_bias_weight=FAMILY_BIAS_WEIGHT,
-        tag_bias_weight=TAG_BIAS_WEIGHT,
-    )
+    result = run_analysis(image_path=image_path, claimed_tags=[])
+
+    tag_results = result.get("tag_stage", {}).get("results", [])
+    family_results = result.get("family_stage", {}).get("results", [])
+
+    top_tag = result.get("top_tag")
+    if not top_tag:
+        top_tag = tag_results[0][0] if tag_results else "None"
+
+    top_tags = result.get("top_tags")
+    if not top_tags:
+        top_tags = [row[0] for row in tag_results[:3]]
+
+    top_family = None
+    if top_tag and top_tag != "None":
+        top_family = get_family_for_tag(top_tag)
+
+    if not top_family:
+        top_family = result.get("top_family")
+    if not top_family:
+        top_family = family_results[0][0] if family_results else "None"
 
     return {
-        "top_tag": result["top_tag"],
-        "top_tags": result["top_tags"],
-        "top_family": result["top_family"],
+        "top_tag": top_tag or "None",
+        "top_tags": top_tags,
+        "top_family": top_family or "None",
     }

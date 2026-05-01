@@ -1,24 +1,37 @@
 from .family_specs import FAMILY_SPECS
 
 TAG_SPECS = {
+    # =========================
+    # ATHLETICS
+    # =========================
     "Basketball": {
         "family": "Athletics",
         "prompts": [
             "Basketball",
-            "basketball game",
-            "outdoor basketball",
-            "person dribbling a basketball"
+            "basketball court with hoop and ball",
+            "person dribbling a basketball",
+            "basketball game on a court",
         ],
         "detector_weights": {"sports ball": 8.0},
         "modules": ["activity_bias", "ball_sport_like"],
+    },
+    "Cardio": {
+        "family": "Athletics",
+        "prompts": [
+            "Cardio",
+            "cardio workout indoors",
+            "fitness cardio training session",
+            "person doing cardio exercise",
+        ],
+        "modules": ["activity_bias", "cardio_like"],
     },
     "Workout": {
         "family": "Athletics",
         "prompts": [
             "Workout",
-            "gym workout",
-            "exercise session",
-            "fitness training"
+            "gym workout with weights or equipment",
+            "person exercising in a gym",
+            "bench press or fitness workout",
         ],
         "modules": ["activity_bias", "workout_like"],
     },
@@ -26,9 +39,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Hiking",
-            "outdoor hiking",
-            "trail walking",
-            "hiking outdoors"
+            "person hiking on a trail",
+            "outdoor trail hiking",
+            "hiker walking in nature",
         ],
         "modules": ["activity_bias"],
     },
@@ -36,19 +49,29 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Running",
-            "outdoor running",
-            "jogging",
-            "running exercise"
+            "person running outdoors",
+            "marathon or running race",
+            "runner on a road or track",
         ],
-        "modules": ["activity_bias"],
+        "modules": ["activity_bias", "running_like"],
+    },
+    "Rock Climbing": {
+        "family": "Athletics",
+        "prompts": [
+            "Rock Climbing",
+            "person climbing a rock wall",
+            "indoor climbing gym or climbing wall",
+            "climber on a rock face or climbing holds",
+        ],
+        "modules": ["activity_bias", "rock_climbing_like"],
     },
     "Soccer": {
         "family": "Athletics",
         "prompts": [
             "Soccer",
-            "soccer game",
-            "playing soccer",
-            "outdoor soccer"
+            "soccer game on a field",
+            "person playing soccer",
+            "outdoor soccer match",
         ],
         "detector_weights": {"sports ball": 5.0},
         "modules": ["activity_bias", "ball_sport_like"],
@@ -57,9 +80,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Cycling",
-            "riding a bicycle",
+            "person riding a bicycle",
             "biking outdoors",
-            "cycling activity"
+            "cycling on a road or trail",
         ],
         "detector_weights": {"bicycle": 8.0},
         "modules": ["activity_bias", "cycling_like"],
@@ -68,9 +91,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Surfing",
-            "riding a surfboard",
-            "surfing on water",
-            "surf activity"
+            "person riding a surfboard",
+            "surfer on a wave",
+            "surfing on the water",
         ],
         "detector_weights": {"surfboard": 8.0},
         "modules": ["activity_bias", "surf_like"],
@@ -79,9 +102,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Skateboarding",
-            "riding a skateboard",
-            "skateboard trick",
-            "skateboarding activity"
+            "person riding a skateboard",
+            "skateboard trick outdoors",
+            "skateboarding on pavement",
         ],
         "detector_weights": {"skateboard": 8.0},
         "modules": ["activity_bias", "skate_like"],
@@ -90,9 +113,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Tennis",
-            "playing tennis",
-            "tennis racket sport",
-            "tennis match"
+            "person swinging a tennis racket",
+            "tennis court with racket sport",
+            "tennis match with a racket",
         ],
         "detector_weights": {"tennis racket": 8.0},
         "modules": ["activity_bias", "racket_sport_like"],
@@ -101,13 +124,13 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Baseball",
-            "baseball game",
-            "baseball bat sport",
-            "playing baseball"
+            "baseball game on a field",
+            "person playing baseball",
+            "baseball bat and glove sport",
         ],
         "detector_weights": {
             "baseball bat": 8.0,
-            "baseball glove": 7.0
+            "baseball glove": 7.0,
         },
         "modules": ["activity_bias", "baseball_like"],
     },
@@ -115,13 +138,13 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Skiing",
-            "skiing on snow",
-            "ski activity",
-            "winter skiing"
+            "person skiing on snow",
+            "skiing down a snowy slope",
+            "winter ski activity",
         ],
         "detector_weights": {
             "skis": 8.0,
-            "snowboard": 4.5
+            "snowboard": 4.5,
         },
         "modules": ["activity_bias", "snow_sport_like"],
     },
@@ -129,9 +152,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Football",
-            "football game",
-            "playing football",
-            "team football"
+            "football game on a field",
+            "person playing football",
+            "team football play",
         ],
         "detector_weights": {"sports ball": 5.0},
         "modules": ["activity_bias", "ball_sport_like"],
@@ -140,9 +163,9 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Volleyball",
+            "people playing volleyball",
             "volleyball game",
-            "playing volleyball",
-            "beach volleyball"
+            "beach or court volleyball",
         ],
         "detector_weights": {"sports ball": 5.0},
         "modules": ["activity_bias", "ball_sport_like"],
@@ -151,20 +174,23 @@ TAG_SPECS = {
         "family": "Athletics",
         "prompts": [
             "Swimming",
-            "swimming activity",
-            "pool swimming",
-            "swim practice"
+            "person swimming in water",
+            "pool swimming activity",
+            "swimmer in a pool",
         ],
         "modules": ["activity_bias"],
     },
 
+    # =========================
+    # SMARTS
+    # =========================
     "Study": {
         "family": "Smarts",
         "prompts": [
             "Study",
-            "studying",
-            "studying at a desk",
-            "schoolwork"
+            "student studying with books and notes",
+            "laptop and textbooks study session",
+            "studying at a desk with school materials",
         ],
         "detector_weights": {"laptop": 3.5, "book": 4.0, "backpack": 1.0},
         "modules": ["activity_bias", "study_general"],
@@ -173,9 +199,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "School",
-            "school activity",
-            "classroom learning",
-            "student life"
+            "student at school",
+            "classroom school activity",
+            "school learning environment",
         ],
         "detector_weights": {"book": 2.5, "backpack": 2.0},
         "modules": ["activity_bias", "school_like"],
@@ -184,9 +210,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Coding",
-            "computer programming",
-            "writing code",
-            "software development"
+            "person writing code on a laptop",
+            "computer programming work",
+            "software development on a computer",
         ],
         "detector_weights": {"laptop": 5.5},
         "modules": ["activity_bias", "screen_work"],
@@ -195,9 +221,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Science",
-            "science learning",
-            "science activity",
-            "scientific study"
+            "science learning activity",
+            "person doing science work",
+            "scientific study scene",
         ],
         "modules": ["activity_bias"],
     },
@@ -205,9 +231,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Research",
-            "academic research",
-            "reading for research",
-            "investigating information"
+            "research papers and laptop on a desk",
+            "academic research notes and articles",
+            "person reading sources and taking research notes",
         ],
         "detector_weights": {"laptop": 2.5, "book": 2.5},
         "modules": ["activity_bias", "research_like"],
@@ -216,9 +242,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Homework",
-            "doing homework",
-            "student homework",
-            "working on assignments"
+            "student doing homework",
+            "working on school assignments",
+            "homework at a desk",
         ],
         "modules": ["activity_bias", "homework_like"],
     },
@@ -226,9 +252,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Reading",
-            "reading a book",
-            "studying from a book",
-            "focused reading"
+            "person reading a physical book",
+            "open book held for reading",
+            "quiet book reading scene",
         ],
         "detector_weights": {"book": 4.0},
         "modules": ["activity_bias", "reading_like"],
@@ -238,8 +264,8 @@ TAG_SPECS = {
         "prompts": [
             "Math",
             "solving math problems",
-            "math study session",
-            "learning mathematics"
+            "doing mathematics at a desk",
+            "person working on math homework",
         ],
         "modules": ["activity_bias"],
     },
@@ -247,9 +273,9 @@ TAG_SPECS = {
         "family": "Smarts",
         "prompts": [
             "Exam",
-            "exam preparation",
-            "testing session",
-            "studying for an exam"
+            "studying for an exam",
+            "test preparation session",
+            "person preparing for a test",
         ],
         "modules": ["activity_bias"],
     },
@@ -258,116 +284,132 @@ TAG_SPECS = {
         "prompts": [
             "Project",
             "working on a project",
-            "academic project",
-            "building a project"
+            "academic or technical project work",
+            "building or preparing a project",
         ],
         "detector_weights": {"laptop": 2.5},
         "modules": ["activity_bias", "project_like"],
     },
+    "Chess": {
+        "family": "Smarts",
+        "prompts": [
+            "Chess",
+            "person playing chess",
+            "chess board with pieces",
+            "strategy board game chess",
+        ],
+        "modules": ["activity_bias", "chess_like"],
+    },
 
+    # =========================
+    # SOCIABILITY
+    # =========================
     "Friends": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Friends",
-            "friends together",
-            "group of friends",
-            "friend hangout"
+            "group of friends together",
+            "friends hanging out together",
+            "casual friend group photo",
         ],
         "detector_weights": {
             "dining table": 3.5,
             "cake": 3.0,
             "cup": 1.2,
-            "bench": 0.8
+            "bench": 0.8,
         },
         "modules": ["activity_bias", "group_social"],
     },
     "Hangout": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Hangout",
-            "casual hangout",
-            "spending time together",
-            "social hangout"
+            "casual hangout with other people",
+            "relaxed time together",
+            "people hanging out socially",
         ],
         "detector_weights": {
             "dining table": 4.0,
             "cup": 1.5,
             "chair": 0.8,
-            "bench": 1.0
+            "bench": 1.0,
         },
         "modules": ["activity_bias", "hangout_like"],
     },
     "Family": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Family",
-            "family moment",
-            "family together",
-            "time with family"
+            "family spending time together",
+            "family group photo or moment",
+            "parents kids or relatives together",
         ],
         "detector_weights": {
             "dining table": 3.5,
-            "cake": 3.0
+            "cake": 3.0,
         },
         "modules": ["activity_bias", "family_like"],
     },
     "Party": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Party",
-            "party scene",
-            "celebration with friends",
-            "social party"
+            "birthday party with cake",
+            "celebration with decorations and people",
+            "group party scene",
         ],
         "detector_weights": {
             "cake": 6.0,
-            "dining table": 2.5
+            "dining table": 2.5,
         },
         "modules": ["activity_bias", "party_like"],
     },
     "Support": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Support",
-            "helping someone",
-            "being supportive",
-            "supportive social moment"
+            "person comforting or supporting someone",
+            "supportive interaction between people",
+            "helpful social support moment",
         ],
         "modules": ["activity_bias", "supportive_social"],
     },
     "Volunteer": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Volunteer",
-            "volunteer activity",
-            "community helping",
-            "group volunteering"
+            "community volunteer activity",
+            "people helping in an organized way",
+            "group volunteering scene",
         ],
         "modules": ["activity_bias", "supportive_social"],
     },
     "Helping": {
-        "family": "Social",
+        "family": "Sociability",
         "prompts": [
             "Helping",
-            "helping activity",
-            "helping others",
-            "assisting someone"
+            "person helping another person",
+            "assisting someone with a task",
+            "helpful interaction between people",
         ],
         "modules": ["activity_bias", "supportive_social"],
     },
 
+    # =========================
+    # VIBES
+    # =========================
     "Beach": {
         "family": "Vibes",
         "prompts": [
             "Beach",
-            "beach leisure",
             "relaxing at the beach",
-            "beach day"
+            "beach day by the ocean",
+            "sand and ocean leisure scene",
         ],
         "detector_weights": {
             "kite": 4.0,
             "boat": 2.0,
-            "surfboard": 1.0
+            "surfboard": 1.0,
         },
         "modules": ["activity_bias", "beach_like"],
     },
@@ -375,9 +417,9 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Camping",
-            "camping trip",
-            "outdoor camping",
-            "camp leisure"
+            "camping outdoors",
+            "campsite leisure scene",
+            "camping trip in nature",
         ],
         "detector_weights": {"frisbee": 2.0},
         "modules": ["activity_bias"],
@@ -386,9 +428,9 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Gaming",
-            "playing video games",
-            "gaming setup",
-            "video game leisure"
+            "person playing video games",
+            "gaming setup indoors",
+            "video game leisure scene",
         ],
         "modules": ["activity_bias", "screen_leisure"],
     },
@@ -396,20 +438,20 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Nature",
-            "nature scenery",
-            "outdoor scenery",
-            "time in nature"
+            "mountain landscape scenery",
+            "outdoor scenic view or wildlife",
+            "nature photo with mountains or wilderness",
         ],
-        "detector_weights": {"dog": 2.0},
-        "modules": ["activity_bias"],
+        "detector_weights": {"dog": 1.0},
+        "modules": ["activity_bias", "nature_like"],
     },
     "Pets": {
         "family": "Vibes",
         "prompts": [
             "Pets",
-            "pet animal",
-            "dog or cat",
-            "pet moment"
+            "person with a pet animal",
+            "dog or cat companion moment",
+            "pet centered lifestyle photo",
         ],
         "detector_weights": {"dog": 8.0, "cat": 8.0},
         "modules": ["activity_bias", "pet_leisure"],
@@ -418,9 +460,9 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Travel",
-            "travel moment",
-            "trip activity",
-            "vacation scene"
+            "tourist standing by city landmark",
+            "travel photo at famous tower or landmark",
+            "city sightseeing scene",
         ],
         "detector_weights": {
             "car": 2.5,
@@ -428,7 +470,7 @@ TAG_SPECS = {
             "train": 3.0,
             "airplane": 6.0,
             "boat": 4.5,
-            "kite": 2.0
+            "kite": 2.0,
         },
         "modules": ["activity_bias", "travel_like"],
     },
@@ -436,9 +478,9 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Meditation",
-            "meditating",
-            "mindful relaxation",
-            "quiet wellness moment"
+            "person meditating calmly",
+            "mindful seated relaxation",
+            "quiet wellness meditation scene",
         ],
         "modules": ["activity_bias"],
     },
@@ -446,9 +488,9 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Selfie",
-            "taking a selfie",
-            "casual selfie",
-            "personal lifestyle photo"
+            "person taking a selfie",
+            "phone facing self portrait",
+            "casual selfie lifestyle photo",
         ],
         "detector_weights": {"cat": 1.5, "cell phone": 1.5},
         "modules": ["activity_bias", "selfie_like"],
@@ -457,92 +499,95 @@ TAG_SPECS = {
         "family": "Vibes",
         "prompts": [
             "Walking",
-            "casual walking",
-            "walk outdoors",
-            "leisure walk"
+            "person walking casually outdoors",
+            "leisure walk outside",
+            "casual outdoor walking scene",
         ],
         "detector_weights": {"dog": 2.0},
         "modules": ["activity_bias", "walking_like"],
     },
 
+    # =========================
+    # CREATIVITY
+    # =========================
     "Art": {
         "family": "Creativity",
         "prompts": [
             "Art",
-            "making art",
-            "artistic creation",
-            "art project"
+            "person making visual art",
+            "handmade art creation",
+            "art project in progress",
         ],
         "modules": ["activity_bias"],
     },
     "Photography": {
         "family": "Creativity",
         "prompts": [
-            "Photography",
-            "taking photos",
-            "photo activity",
-            "camera photography"
+            "person holding a camera up to take a photo",
+            "phone raised in front of face to photograph",
+            "photographer aiming a camera or phone at a subject",
+            "visible camera or phone used to take a picture",
         ],
-        "detector_weights": {"cell phone": 1.5},
+        "detector_weights": {"cell phone": 0.8},
         "modules": ["activity_bias", "photography_like"],
     },
     "Music": {
         "family": "Creativity",
         "prompts": [
-            "Music",
-            "playing music",
-            "musical activity",
-            "performing music"
+            "music studio with microphone and instrument",
+            "person playing guitar or piano in studio",
+            "recording session with musician and microphone",
+            "musician performing with instrument",
         ],
-        "modules": ["activity_bias"],
+        "modules": ["activity_bias", "music_like"],
     },
     "Painting": {
         "family": "Creativity",
         "prompts": [
-            "Painting",
-            "painting art",
-            "making a painting",
-            "paintbrush artwork"
+            "paintbrush painting on canvas",
+            "artist painting at an easel",
+            "wet paint on canvas artwork",
+            "canvas painting with visible brush strokes",
         ],
-        "modules": ["activity_bias"],
+        "modules": ["activity_bias", "painting_like"],
     },
     "Writing": {
         "family": "Creativity",
         "prompts": [
-            "Writing",
-            "creative writing",
-            "writing activity",
-            "writing on paper"
+            "handwriting in a notebook",
+            "person writing on paper at a desk",
+            "writing notes in a notebook",
+            "hand writing on paper",
         ],
-        "modules": ["activity_bias"],
+        "modules": ["activity_bias", "writing_like"],
     },
     "Drawing": {
         "family": "Creativity",
         "prompts": [
-            "Drawing",
-            "drawing art",
-            "making a drawing",
-            "sketching"
+            "pencil sketch on paper",
+            "hand drawing in a sketchbook",
+            "drawing with pencil on paper",
+            "line art sketch on notebook page",
         ],
-        "modules": ["activity_bias"],
+        "modules": ["activity_bias", "drawing_like"],
     },
     "Dance": {
         "family": "Creativity",
         "prompts": [
             "Dance",
-            "dancing performance",
-            "dance activity",
-            "creative movement"
+            "person dancing in motion",
+            "dance performance scene",
+            "creative dance movement",
         ],
         "modules": ["activity_bias"],
     },
     "Fashion": {
         "family": "Creativity",
         "prompts": [
-            "Fashion",
-            "fashion styling",
-            "style expression",
-            "fashion look"
+            "person showing an outfit style",
+            "fashion pose or mirror style photo",
+            "style expression through clothing",
+            "outfit mirror photo or fashion pose",
         ],
         "detector_weights": {"cell phone": 0.8},
         "modules": ["activity_bias", "fashion_like"],
@@ -550,10 +595,10 @@ TAG_SPECS = {
     "Cooking": {
         "family": "Creativity",
         "prompts": [
-            "Cooking",
-            "cooking creatively",
-            "food preparation",
-            "making a meal"
+            "person preparing food in a kitchen",
+            "cooking a meal",
+            "food preparation scene",
+            "kitchen cooking activity",
         ],
         "modules": ["activity_bias"],
     },

@@ -1,12 +1,31 @@
 from test_siglip_hybrid import analyze_image
 import csv
 import json
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-LABELS_CSV = ROOT / "labels.csv"
+DEFAULT_LABELS_CSV = ROOT / "labels.csv"
 RESULTS_JSON = ROOT / "benchmark_results.json"
+
+
+def resolve_labels_csv() -> Path:
+    """
+    Usage:
+      python benchmark.py
+      python benchmark.py benchmark_slices/labels_creativity_cluster.csv
+    """
+    if len(sys.argv) > 1:
+        candidate = Path(sys.argv[1])
+        if not candidate.is_absolute():
+            candidate = ROOT / candidate
+        return candidate
+
+    return DEFAULT_LABELS_CSV
+
+
+LABELS_CSV = resolve_labels_csv()
 
 
 def predict_image(image_path: str) -> dict:
@@ -60,6 +79,9 @@ def load_labels(csv_path: Path) -> list[dict]:
 
 
 def main() -> None:
+    if not LABELS_CSV.exists():
+        raise FileNotFoundError(f"Labels CSV not found: {LABELS_CSV}")
+
     rows = load_labels(LABELS_CSV)
     results = []
     by_family = defaultdict(list)
@@ -79,6 +101,7 @@ def main() -> None:
     negatives = [r for r in results if not r["should_pass"]]
 
     summary = {
+        "labels_csv": str(LABELS_CSV.relative_to(ROOT)) if LABELS_CSV.is_relative_to(ROOT) else str(LABELS_CSV),
         "total_images": total,
         "top1_accuracy": safe_div(sum(r["top1_correct"] for r in results), total),
         "top3_recall": safe_div(sum(r["top3_correct"] for r in results), total),
@@ -121,6 +144,7 @@ def main() -> None:
         json.dump(output, f, indent=2)
 
     print("=== Benchmark Summary ===")
+    print(f"Labels CSV: {summary['labels_csv']}")
     print(f"Total images: {summary['total_images']}")
     print(f"Top-1 accuracy: {summary['top1_accuracy']:.3f}")
     print(f"Top-3 recall: {summary['top3_recall']:.3f}")

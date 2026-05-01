@@ -1,0 +1,6 @@
+image_path,primary_tag,secondary_tags,family,expected_should_pass,notes
+benchmark_dataset/nature/Nature_Mountain.jpg,Nature,,Vibes,1,
+benchmark_dataset/nature/Nature_Turtles.jpg,Nature,,Vibes,1,
+benchmark_dataset/travel/Travel_Akihabara_Ambiguous.jpg,Travel,,Vibes,1,
+benchmark_dataset/travel/Travel_Osaka_Gilco.jpg,Travel,,Vibes,1,
+benchmark_dataset/travel/Travel_Tokyo_Tower.jpg,Travel,,Vibes,1,

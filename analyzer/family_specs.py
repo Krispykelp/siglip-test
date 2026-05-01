@@ -1,55 +1,55 @@
 FAMILY_SPECS = {
     "Athletics": {
         "prompts": [
-            "sports",
-            "fitness activity",
-            "athletic activity",
-            "physical exercise",
-            "outdoor sport",
-            "competitive sport",
-            "training session"
+            "basketball court soccer field or running track",
+            "gym workout or exercise session",
+            "rock climbing wall or hiking trail",
+            "athletes playing sports or working out",
+            "sports competition with physical motion",
+            "exercise or fitness training scene",
+            "team or solo athletic activity",
         ],
         "detector_weights": {
             "sports ball": 8.0,
             "bicycle": 7.0,
             "surfboard": 7.0,
             "skateboard": 7.0,
-            "tennis racket": 7.0,
+            "tennis racket": 6.0,
             "frisbee": 6.0,
             "baseball bat": 7.0,
             "baseball glove": 7.0,
             "skis": 7.0,
             "snowboard": 7.0,
-            "kite": 5.5,
+            "kite": 0.5,
         },
-        "modules": ["athletics_family"]
+        "modules": ["athletics_family"],
     },
     "Smarts": {
         "prompts": [
-            "studying",
-            "learning",
-            "academic activity",
-            "school work",
-            "intellectual activity",
-            "education",
-            "focused desk work"
+            "student studying with books and notes",
+            "school work with laptop and books on desk",
+            "homework or exam preparation with books",
+            "academic research papers and laptop on a desk",
+            "coding or focused desk work with computer",
+            "library or classroom study scene",
+            "chess board strategy game on a table",
         ],
         "detector_weights": {
             "laptop": 6.0,
             "book": 3.5,
             "backpack": 1.0,
         },
-        "modules": ["smarts_family"]
+        "modules": ["smarts_family"],
     },
-    "Social": {
+    "Sociability": {
         "prompts": [
-            "friends together",
-            "group of people spending time together",
-            "social gathering",
-            "celebration with others",
-            "family moment",
-            "people interacting socially",
-            "supportive social moment"
+            "friends or family social gathering",
+            "people eating celebrating or hanging out together",
+            "supportive or helping interaction between people",
+            "group social scene with tables drinks or cake",
+            "friends shopping or hanging out",
+            "family group moment",
+            "social celebration or hangout",
         ],
         "detector_weights": {
             "dining table": 3.0,
@@ -58,17 +58,17 @@ FAMILY_SPECS = {
             "chair": 0.7,
             "bench": 0.6,
         },
-        "modules": ["social_family"]
+        "modules": ["social_family"],
     },
     "Vibes": {
         "prompts": [
-            "leisure activity",
-            "casual relaxing moment",
-            "lifestyle atmosphere",
-            "travel or scenery moment",
-            "pet moment",
-            "nature leisure",
-            "chill entertainment activity"
+            "city skyline or landmark sightseeing photo",
+            "mountain landscape or scenic nature view",
+            "tourist at a city landmark or tower",
+            "outdoor scenic viewpoint or skyline",
+            "nature or travel scenery photo",
+            "vacation or sightseeing destination scene",
+            "scenic landscape or landmark moment",
         ],
         "detector_weights": {
             "dog": 3.5,
@@ -79,20 +79,21 @@ FAMILY_SPECS = {
             "airplane": 1.4,
             "boat": 1.2,
         },
-        "modules": ["vibes_family"]
+        "modules": ["vibes_family"],
     },
     "Creativity": {
         "prompts": [
-            "creative activity",
-            "artistic work",
-            "music or art",
-            "creative project",
-            "visual creativity",
-            "self expression"
+            "pencil sketch or drawing on paper",
+            "paintbrush painting on canvas or easel",
+            "music studio with microphone or instrument",
+            "artist at work with sketchbook canvas or instrument",
+            "art supplies sketchbook or easel scene",
+            "recording studio or music practice",
+            "photographer visibly holding camera up to take a shot",
         ],
         "detector_weights": {
-            "cell phone": 0.9,
+            "cell phone": 0.6,
         },
-        "modules": ["creativity_family"]
-    }
+        "modules": ["creativity_family"],
+    },
 }

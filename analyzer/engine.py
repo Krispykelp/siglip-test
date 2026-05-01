@@ -16,6 +16,7 @@ from .detection import (
     validate_image_for_pipeline,
 )
 from .family_specs import FAMILY_SPECS
+from .reranker import rerank_tag_candidates
 from .schemas import make_analysis_result
 from .scoring import (
     apply_family_fusion,
@@ -24,6 +25,7 @@ from .scoring import (
     family_confidence_passes,
     resolve_rewards,
 )
+from .tag_mapper import get_family_for_tag
 from .tag_specs import TAG_SPECS
 from .vlm import (
     collapse_scores,
@@ -35,13 +37,49 @@ from .vlm import (
     sort_collapsed,
 )
 
+_SHARED_DEVICE = None
+_SHARED_PROCESSOR = None
+_SHARED_VLM = None
+_SHARED_DETECTOR = None
+
+
+def get_shared_models():
+    global _SHARED_DEVICE, _SHARED_PROCESSOR, _SHARED_VLM, _SHARED_DETECTOR
+
+    if (
+        _SHARED_DEVICE is None
+        or _SHARED_PROCESSOR is None
+        or _SHARED_VLM is None
+        or _SHARED_DETECTOR is None
+    ):
+        device = print_device_info()
+        processor, vlm = load_vlm(VLM_MODEL_NAME, device)
+        detector = load_yolo(YOLO_MODEL_NAME)
+
+        _SHARED_DEVICE = device
+        _SHARED_PROCESSOR = processor
+        _SHARED_VLM = vlm
+        _SHARED_DETECTOR = detector
+
+    return _SHARED_DEVICE, _SHARED_PROCESSOR, _SHARED_VLM, _SHARED_DETECTOR
+
+
+def _resolve_final_top_family(final_top_tag: str, family_results: list[tuple[str, float, str]]) -> str:
+    if final_top_tag and final_top_tag != "None":
+        mapped = get_family_for_tag(final_top_tag)
+        if mapped:
+            return mapped
+
+    if family_results:
+        return family_results[0][0]
+
+    return "None"
+
 
 def run_analysis(image_path: str, claimed_tags: list[str]):
     validate_image_for_pipeline(image_path)
 
-    device = print_device_info()
-    processor, vlm = load_vlm(VLM_MODEL_NAME, device)
-    detector = load_yolo(YOLO_MODEL_NAME)
+    device, processor, vlm, detector = get_shared_models()
 
     detections, detect_time = run_yolo_detection(detector, image_path)
     all_detection_counts = summarize_detections(detections)
@@ -81,7 +119,7 @@ def run_analysis(image_path: str, claimed_tags: list[str]):
         "winner": None,
         "runner_up": None,
         "margin": None,
-        "reason": "tag_stage_not_run"
+        "reason": "tag_stage_not_run",
     }
     tag_time = 0.0
     direct_supported = []
@@ -90,6 +128,16 @@ def run_analysis(image_path: str, claimed_tags: list[str]):
     primary_inferred = None
     bonus_inferred = []
     rewards = []
+    rerank_summary = {
+        "winner": None,
+        "runner_up": None,
+        "margin": None,
+        "reason": "rerank_not_run",
+        "adjustments": [],
+    }
+
+    final_top_tag = "None"
+    final_top_family = family_results[0][0] if family_results else "None"
 
     if family_gate_ok:
         selected_tag_map = {}
@@ -113,16 +161,46 @@ def run_analysis(image_path: str, claimed_tags: list[str]):
             prompts=tag_prompts,
         )
         canonical_results = sort_collapsed(collapsed_tags)
-        canonical_results, traced_tag_results, tag_decision_summary = apply_tag_fusion(
+        canonical_results, traced_tag_results, pre_rerank_decision = apply_tag_fusion(
             canonical_results,
             trusted_detection_counts,
         )
 
-        top_family = top_families[0]
+        canonical_results, rerank_summary = rerank_tag_candidates(
+            tag_results=canonical_results,
+            detection_counts=trusted_detection_counts,
+            ctx=ctx,
+            family_results=family_results,
+        )
+
+        if canonical_results:
+            final_top_tag = canonical_results[0][0]
+            final_top_family = _resolve_final_top_family(final_top_tag, family_results)
+
+            tag_decision_summary = {
+                "winner": final_top_tag,
+                "runner_up": canonical_results[1][0] if len(canonical_results) > 1 else None,
+                "margin": (canonical_results[0][1] - canonical_results[1][1]) if len(canonical_results) > 1 else None,
+                "reason": rerank_summary["reason"],
+                "pre_rerank_reason": pre_rerank_decision.get("reason"),
+                "rerank_adjustments": rerank_summary["adjustments"],
+            }
+        else:
+            final_top_tag = "None"
+            final_top_family = _resolve_final_top_family(final_top_tag, family_results)
+            tag_decision_summary = {
+                "winner": None,
+                "runner_up": None,
+                "margin": None,
+                "reason": "rerank_left_no_candidates",
+                "pre_rerank_reason": pre_rerank_decision.get("reason"),
+                "rerank_adjustments": rerank_summary["adjustments"],
+            }
+
         direct_supported, family_supported, unsupported, primary_inferred, bonus_inferred = build_verifier_summary(
             canonical_results=canonical_results,
             claimed_tags=claimed_tags,
-            top_family=top_family,
+            top_family=final_top_family,
         )
 
         rewards = resolve_rewards(
@@ -132,7 +210,7 @@ def run_analysis(image_path: str, claimed_tags: list[str]):
             bonus_inferred=bonus_inferred,
         )
 
-    return make_analysis_result(
+    result = make_analysis_result(
         image_path=image_path,
         claimed_tags=claimed_tags,
         detections_all=all_detection_counts,
@@ -156,3 +234,10 @@ def run_analysis(image_path: str, claimed_tags: list[str]):
         bonus_inferred=bonus_inferred,
         rewards=rewards,
     )
+
+    result["top_tag"] = final_top_tag
+    result["top_tags"] = [tag for tag, _score, _prompt in canonical_results[:3]]
+    result["top_family"] = final_top_family
+    result["rerank_summary"] = rerank_summary
+
+    return result

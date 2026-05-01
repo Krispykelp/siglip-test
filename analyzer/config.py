@@ -1,7 +1,7 @@
 VLM_MODEL_NAME = "google/siglip2-base-patch16-224"
 YOLO_MODEL_NAME = "yolo11n.pt"
 
-TOP_FAMILIES_TO_KEEP = 1
+TOP_FAMILIES_TO_KEEP = 2
 TOP_K_CANONICAL = 12
 
 SUPPORT_MARGIN_FROM_TOP = 1.2
@@ -16,9 +16,12 @@ MIN_BONUS_SCORE = -20.0
 
 ACTIVITY_BIAS = 0.40
 
-FAMILY_MIN_SCORE = -14.0
-FAMILY_MIN_MARGIN = 1.5
-DETECTOR_OVERRIDE_FAMILIES = {"Athletics", "Smarts", "Social", "Vibes"}
+# Slightly more permissive so near-threshold Creativity/Vibes cases
+# can actually enter tag-stage competition.
+FAMILY_MIN_SCORE = -19.0
+FAMILY_MIN_MARGIN = 0.25
+
+DETECTOR_OVERRIDE_FAMILIES = {"Athletics", "Smarts", "Sociability", "Vibes"}
 
 DIRECT_REWARD = 2
 FAMILY_SUPPORT_REWARD = 1

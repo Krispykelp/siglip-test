@@ -1,0 +1,6 @@
+image_path,primary_tag,secondary_tags,family,expected_should_pass,notes
+benchmark_dataset/family/Family_Restauraunt_POV.jpg,Family,,Sociability,1,
+benchmark_dataset/friends/Friends_Beach.jpg,Friends,,Sociability,1,
+benchmark_dataset/friends/Friends_Camping.jpg,Friends,,Sociability,1,
+benchmark_dataset/friends/Friends_Hangout1.jpg,Friends,,Sociability,1,
+benchmark_dataset/friends/Friends_Shopping.jpg,Friends,,Sociability,1,

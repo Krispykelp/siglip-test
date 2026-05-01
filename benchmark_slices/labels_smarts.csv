@@ -1,0 +1,11 @@
+image_path,primary_tag,secondary_tags,family,expected_should_pass,notes
+benchmark_dataset/chess/Chess_POV.jpg,Chess,,Smarts,1,
+benchmark_dataset/chess/Chess_board.jpg,Chess,,Smarts,1,
+benchmark_dataset/chess/Chess_in_the_park.jpg,Chess,,Smarts,1,
+benchmark_dataset/chess/Chess_in_the_park2.jpg,Chess,,Smarts,1,
+benchmark_dataset/reading/Reading_POV.jpg,Reading,,Smarts,1,
+benchmark_dataset/reading/Reading_POV2.jpg,Reading,,Smarts,1,
+benchmark_dataset/study/Studying_Empty_Table.jpg,Study,,Smarts,1,
+benchmark_dataset/study/Studying_Group.jpg,Study,,Smarts,1,
+benchmark_dataset/study/Studying_Library.jpg,Study,,Smarts,1,
+benchmark_dataset/study/Studying_Study_Room_Ambiguous.jpg,Study,,Smarts,1,
