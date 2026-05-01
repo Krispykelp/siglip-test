@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel, model_validator
 from typing import List, Optional
 from urllib.request import urlopen, Request
@@ -10,6 +10,8 @@ from analyzer.engine import run_analysis
 from analyzer.schemas import make_compact_analysis_result
 
 app = FastAPI()
+
+PYTHON_ANALYZER_API_KEY = os.getenv("PYTHON_ANALYZER_API_KEY", "")
 
 
 class AnalyzeRequest(BaseModel):
@@ -36,15 +38,22 @@ def health():
     return {"ok": True}
 
 
+def require_auth(authorization: Optional[str]) -> None:
+    if not PYTHON_ANALYZER_API_KEY:
+        return
+
+    expected = f"Bearer {PYTHON_ANALYZER_API_KEY}"
+    if authorization != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
 def download_image_to_temp(image_url: str) -> str:
     tmp_path = None
 
     try:
         request = Request(
             image_url,
-            headers={
-                "User-Agent": "digidachi-analyzer/1.0"
-            },
+            headers={"User-Agent": "digidachi-analyzer/1.0"},
         )
 
         with urlopen(request, timeout=30) as response:
@@ -90,7 +99,9 @@ def download_image_to_temp(image_url: str) -> str:
 
 
 @app.post("/analyze")
-def analyze(req: AnalyzeRequest):
+def analyze(req: AnalyzeRequest, authorization: Optional[str] = Header(None)):
+    require_auth(authorization)
+
     temp_path = None
 
     try:
